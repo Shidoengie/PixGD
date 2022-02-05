@@ -12,13 +12,11 @@ onready var eyedropper_button = get_node("CanvasLayer/VBoxContainer/Eyedropper")
 onready var bg = get_node("Canvas/Canvas2")
 onready var fill_button = get_node("CanvasLayer/VBoxContainer/Bucket")
 
-var mouse_action
 var img_mousepos
 var texture = ImageTexture.new()
 var nimg = Image.new()
 var mouse_down = false
 var relev
-var inp_check
 
 func _ready():
 	set_as_toplevel(true)
@@ -29,9 +27,32 @@ func _process(delta):
 	img_mousepos = img.get_local_mouse_position()
 	texture.create_from_image(nimg,0)
 	img.texture = texture
-	mouse_action = Input.is_action_pressed("ui_click_l") or Input.is_action_pressed("ui_click_r")
-	
+	ui_input()
+	relev = img.get_local_mouse_position()
 var i = 0.1
+func ui_input():
+	if img_mousepos.x >= nimg.get_size().x or img_mousepos.x < 0 or img_mousepos.y >= nimg.get_size().y or img_mousepos.y < 0:
+		return
+	if Input.is_action_pressed("ui_click_l"):
+		nimg.lock()
+		if pen_button.pressed:
+				paint(color_picker.color)
+		elif ers_button.pressed:
+				paint(Color.transparent)
+		elif eyedropper_button.pressed:
+			color_picker.color = nimg.get_pixel(img_mousepos.x,img_mousepos.y)
+		elif fill_button.pressed:
+			floodfill(img_mousepos.x,img_mousepos.y,color_picker.color)
+	elif Input.is_action_pressed("ui_click_r"):
+		nimg.lock()
+		if pen_button.pressed:
+				paint(color_picker2.color)
+		elif ers_button.pressed:
+				paint(Color.transparent)
+		elif eyedropper_button.pressed:
+			color_picker2.color = nimg.get_pixel(img_mousepos.x,img_mousepos.y)
+		elif fill_button.pressed:
+			floodfill(img_mousepos.x,img_mousepos.y,color_picker2.color)
 func paint(color):
 	nimg.lock()
 	while i<1:
@@ -66,35 +87,6 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		if Input.is_action_pressed("ui_middle_click"):
 			cam.position -= event.relative*cam.zoom
-
-func ui_input():
-	if img_mousepos.x >= nimg.get_size().x or img_mousepos.x < 0 or img_mousepos.y >= nimg.get_size().y or img_mousepos.y < 0:
-		return
-	if Input.is_action_pressed("ui_click_l"):
-		nimg.lock()
-		if pen_button.pressed:
-				paint(color_picker.color)
-		elif ers_button.pressed:
-				paint(Color.transparent)
-		elif eyedropper_button.pressed:
-			color_picker.color = nimg.get_pixel(img_mousepos.x,img_mousepos.y)
-		elif fill_button.pressed:
-			floodfill(img_mousepos.x,img_mousepos.y,color_picker.color)
-	elif Input.is_action_pressed("ui_click_r"):
-		nimg.lock()
-		if pen_button.pressed:
-				paint(color_picker2.color)
-		elif ers_button.pressed:
-				paint(Color.transparent)
-		elif eyedropper_button.pressed:
-			color_picker2.color = nimg.get_pixel(img_mousepos.x,img_mousepos.y)
-		elif fill_button.pressed:
-			floodfill(img_mousepos.x,img_mousepos.y,color_picker2.color)
-
-func _unhandled_input(event):
-	relev = img.get_local_mouse_position()
-	if event is InputEventMouseButton or event is InputEventMouseMotion and mouse_action:
-		ui_input()
 
 func floodfill(x,y,color):
 	nimg.lock()
