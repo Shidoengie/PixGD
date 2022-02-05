@@ -267,9 +267,9 @@ __meta__ = {
 
 [node name="Canvas2" type="Sprite" parent="Canvas"]
 show_behind_parent = true
-scale = Vector2( 0.0833334, 0.0833333 )
+position = Vector2( 32, 32 )
+scale = Vector2( 0.0833333, 0.0833333 )
 texture = ExtResource( 5 )
-centered = false
 
 [connection signal="value_changed" from="CanvasLayer/VBoxContainer2/HSlider" to="." method="_on_HSlider_value_changed"]
 [connection signal="text_entered" from="CanvasLayer/VBoxContainer2/LineEdit" to="." method="_on_LineEdit_text_entered"]
