@@ -28,18 +28,12 @@ _global_script_classes=[ {
 "class": "Ezd",
 "language": "GDScript",
 "path": "res://addons/ezd/src/ezd.gd"
-}, {
-"base": "",
-"class": "GitAPI",
-"language": "NativeScript",
-"path": "res://addons/godot-git-plugin/git_api.gdns"
 } ]
 _global_script_class_icons={
 "Example1": "",
 "Example2": "",
 "Example3": "",
-"Ezd": "",
-"GitAPI": ""
+"Ezd": ""
 }
 
 [application]
@@ -51,10 +45,6 @@ config/icon="res://icon.png"
 [editor_plugins]
 
 enabled=PoolStringArray( "res://addons/SliderLabel/plugin.cfg" )
-
-[gdnative]
-
-singletons=[ "res://addons/godot-git-plugin/git_api.gdnlib" ]
 
 [importer_defaults]
 
