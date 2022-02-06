@@ -1,4 +1,4 @@
-extends VBoxContainer
+extends Popup
 
 func _on_PentTextureButton_pressed():
 	$ErasorTextureButton.pressed = false
@@ -23,11 +23,5 @@ func _on_Bucket_pressed():
 	$Eyedropper.pressed = false
 	$ErasorTextureButton.pressed = false
 
-var i = false
 func _on_minTextureButton_pressed():
-	if i:
-		show()
-		i = false
-	else:
-		hide()
-		i = true
+	visible = !visible
