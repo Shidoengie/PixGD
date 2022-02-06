@@ -30,6 +30,8 @@ func _process(delta):
 	texture.create_from_image(nimg,0)
 	img.texture = texture
 	mouse_action = Input.is_action_pressed("ui_click_l") or Input.is_action_pressed("ui_click_r")
+	print(Menu.opened_file)
+	
 	
 var i = 0.1
 func paint(color):
@@ -53,19 +55,6 @@ func _on_HSlider_value_changed(value):
 func scroll():
 	cam.zoom = Vector2(1,1)
 	cam.zoom /= Vector2(int(textfield.text)/100,int((textfield.text))/100)
-
-func _input(event):
-	if event is InputEventMouseButton:
-		if event.is_pressed():
-			if event.button_index == BUTTON_WHEEL_UP:
-				textfield.text = str(((1/cam.zoom.x)*100))
-				cam.zoom /= Vector2(1.5,1.5)
-			if event.button_index == BUTTON_WHEEL_DOWN:
-				textfield.text = str(((1/cam.zoom.x)*100))
-				cam.zoom *= Vector2(1.5,1.5)
-	if event is InputEventMouseMotion:
-		if Input.is_action_pressed("ui_middle_click"):
-			cam.position -= event.relative*cam.zoom
 
 func ui_input():
 	if img_mousepos.x >= nimg.get_size().x or img_mousepos.x < 0 or img_mousepos.y >= nimg.get_size().y or img_mousepos.y < 0:
@@ -95,6 +84,17 @@ func _unhandled_input(event):
 	relev = img.get_local_mouse_position()
 	if event is InputEventMouseButton or event is InputEventMouseMotion and mouse_action:
 		ui_input()
+	if event is InputEventMouseButton:
+		if event.is_pressed():
+			if event.button_index == BUTTON_WHEEL_UP:
+				textfield.text = str(((1/cam.zoom.x)*100))
+				cam.zoom /= Vector2(1.5,1.5)
+			if event.button_index == BUTTON_WHEEL_DOWN:
+				textfield.text = str(((1/cam.zoom.x)*100))
+				cam.zoom *= Vector2(1.5,1.5)
+	if event is InputEventMouseMotion:
+		if Input.is_action_pressed("ui_middle_click"):
+			cam.position -= event.relative*cam.zoom
 
 func floodfill(x,y,color):
 	nimg.lock()

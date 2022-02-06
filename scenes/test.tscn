@@ -1,0 +1,75 @@
+[gd_scene format=2]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WindowDialog" type="WindowDialog" parent="."]
+margin_top = 16.0
+margin_right = 64.0
+margin_bottom = 64.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AcceptDialog" type="AcceptDialog" parent="."]
+margin_left = 72.0
+margin_top = 8.0
+margin_right = 155.0
+margin_bottom = 66.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+margin_left = 160.0
+margin_top = 8.0
+margin_right = 316.0
+margin_bottom = 66.0
+rect_min_size = Vector2( 150, 52.5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FileDialog" type="FileDialog" parent="."]
+margin_left = 320.0
+margin_top = 8.0
+margin_right = 635.0
+margin_bottom = 138.0
+rect_min_size = Vector2( 150, 52.5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PopupMenu" type="PopupMenu" parent="."]
+margin_left = 640.0
+margin_top = -8.0
+margin_right = 660.0
+margin_bottom = 12.0
+
+[node name="PopupDialog" type="PopupDialog" parent="."]
+margin_left = 200.0
+margin_top = 192.0
+margin_right = 240.0
+margin_bottom = 232.0
+
+[node name="ItemList" type="ItemList" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="ItemList"]
+margin_right = 12.0
+margin_bottom = 20.0
+toggle_mode = true
+
+[node name="Button2" type="Button" parent="ItemList"]
+margin_top = 24.0
+margin_right = 12.0
+margin_bottom = 44.0
+toggle_mode = true

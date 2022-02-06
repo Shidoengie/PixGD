@@ -48,6 +48,10 @@ config/name="Pixgd"
 run/main_scene="res://scenes/VImgScene.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Menu="*res://scenes/Menu.gd"
+
 [editor_plugins]
 
 enabled=PoolStringArray( "res://addons/SliderLabel/plugin.cfg" )
