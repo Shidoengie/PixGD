@@ -211,7 +211,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="FileDialog" type="FileDialog" parent="CanvasLayer/HBoxContainer/FileOptionButton"]
+[node name="OpenFileDialog" type="FileDialog" parent="CanvasLayer/HBoxContainer/FileOptionButton"]
 margin_top = 64.0
 margin_right = 1024.0
 margin_bottom = 608.0
@@ -220,6 +220,20 @@ theme = ExtResource( 8 )
 window_title = "Open a File"
 resizable = true
 mode = 0
+access = 2
+current_dir = "/Users/AEPBS/Documents/GitHub/Pixgd"
+current_path = "/Users/AEPBS/Documents/GitHub/Pixgd/"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SaveFileDialog" type="FileDialog" parent="CanvasLayer/HBoxContainer/FileOptionButton"]
+margin_top = 64.0
+margin_right = 1024.0
+margin_bottom = 608.0
+rect_min_size = Vector2( 150, 52.5 )
+theme = ExtResource( 8 )
+resizable = true
 access = 2
 current_dir = "/Users/AEPBS/Documents/GitHub/Pixgd"
 current_path = "/Users/AEPBS/Documents/GitHub/Pixgd/"
@@ -262,9 +276,9 @@ __meta__ = {
 
 [node name="Canvas2" type="Sprite" parent="Canvas"]
 show_behind_parent = true
-position = Vector2( 32, 32 )
 scale = Vector2( 0.0833333, 0.0833333 )
 texture = ExtResource( 5 )
+centered = false
 
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/PentTextureButton" to="CanvasLayer/VBoxContainer" method="_on_PentTextureButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/ErasorTextureButton" to="CanvasLayer/VBoxContainer" method="_on_ErasorTextureButton_pressed"]
@@ -274,3 +288,5 @@ texture = ExtResource( 5 )
 [connection signal="text_entered" from="CanvasLayer/VBoxContainer2/LineEdit" to="." method="_on_LineEdit_text_entered"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer/FileOptionButton" to="CanvasLayer/HBoxContainer" method="_on_FileOptionButton_pressed"]
 [connection signal="id_pressed" from="CanvasLayer/HBoxContainer/FileOptionButton/FilePopupMenu" to="CanvasLayer/HBoxContainer" method="_on_FilePopupMenu_id_pressed"]
+[connection signal="file_selected" from="CanvasLayer/HBoxContainer/FileOptionButton/OpenFileDialog" to="." method="_on_OpenFileDialog_file_selected"]
+[connection signal="file_selected" from="CanvasLayer/HBoxContainer/FileOptionButton/SaveFileDialog" to="." method="_on_SaveFileDialog_file_selected"]

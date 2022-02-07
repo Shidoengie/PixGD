@@ -11,6 +11,7 @@ onready var pen_button = get_node("CanvasLayer/VBoxContainer/PentTextureButton")
 onready var eyedropper_button = get_node("CanvasLayer/VBoxContainer/Eyedropper")
 onready var bg = get_node("Canvas/Canvas2")
 onready var fill_button = get_node("CanvasLayer/VBoxContainer/Bucket")
+onready var open_file_dialog = get_node("CanvasLayer/HBoxContainer/FileOptionButton/OpenFileDialog")
 
 var mouse_action
 var img_mousepos
@@ -23,14 +24,14 @@ var inp_check
 func _ready():
 	set_as_toplevel(true)
 	nimg.create(64,64,false,Image.FORMAT_RGBA8)
+func _process(delta):
 	bg.scale.x = nimg.get_size().x / bg.texture.get_size().x
 	bg.scale.y = nimg.get_size().y / bg.texture.get_size().y
-func _process(delta):
+	
 	img_mousepos = img.get_local_mouse_position()
 	texture.create_from_image(nimg,0)
 	img.texture = texture
 	mouse_action = Input.is_action_pressed("ui_click_l") or Input.is_action_pressed("ui_click_r")
-	print(Menu.opened_file)
 	
 	
 var i = 0.1
@@ -117,3 +118,13 @@ func floodfill(x,y,color):
 			queue.append(Vector2(x,y-1))
 			queue.append(Vector2(x+1,y))
 			queue.append(Vector2(x-1,y))
+
+
+func _on_OpenFileDialog_file_selected(path):
+	nimg.load(path)
+
+
+
+func _on_SaveFileDialog_file_selected(path):
+	
+	nimg.save_png(path)
