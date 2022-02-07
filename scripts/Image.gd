@@ -130,6 +130,8 @@ func _on_SaveFileDialog_file_selected(path):
 	nimg.save_png(path)
 
 
+
 func _on_ok_pressed():
 	nimg.create(width_new_file.value,height_new_file.value,false,Image.FORMAT_RGBA8)
 	$CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog.hide()
+
