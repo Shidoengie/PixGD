@@ -3,7 +3,7 @@ var global_id
 var opened_file
 
 onready var file_popup = get_node("FileOptionButton/FilePopupMenu")
-onready var OpenFile_dialog = get_node("FileOptionButton/OpenFileDialog")
+onready var file_dialog = get_node("FileOptionButton/FileDialog")
 
 func _ready():
 	pass
@@ -17,5 +17,9 @@ func _on_FilePopupMenu_id_pressed(id):
 	global_id = id
 	match id:
 		1:
-			OpenFile_dialog.popup()
-			opened_file = OpenFile_dialog.filename
+			file_dialog.mode = 2
+			
+			file_dialog.popup()
+			opened_file = file_dialog.filename
+		2:
+			pass
