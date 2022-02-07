@@ -12,6 +12,9 @@ onready var eyedropper_button = get_node("CanvasLayer/VBoxContainer/Eyedropper")
 onready var bg = get_node("Canvas/Canvas2")
 onready var fill_button = get_node("CanvasLayer/VBoxContainer/Bucket")
 onready var open_file_dialog = get_node("CanvasLayer/HBoxContainer/FileOptionButton/OpenFileDialog")
+onready var width_new_file = get_node("CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog/Width")
+onready var height_new_file = get_node("CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog/Height")
+
 
 var mouse_action
 var img_mousepos
@@ -123,8 +126,10 @@ func floodfill(x,y,color):
 func _on_OpenFileDialog_file_selected(path):
 	nimg.load(path)
 
-
-
 func _on_SaveFileDialog_file_selected(path):
-	
 	nimg.save_png(path)
+
+
+func _on_ok_pressed():
+	nimg.create(width_new_file.value,height_new_file.value,false,Image.FORMAT_RGBA8)
+	$CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog.hide()

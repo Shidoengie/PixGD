@@ -204,7 +204,7 @@ margin_top = 32.0
 margin_right = 120.0
 margin_bottom = 152.0
 theme = ExtResource( 8 )
-items = [ "New", null, 0, false, false, 0, 0, null, "", false, "Open", null, 0, false, false, 1, 0, null, "", false, "Save", null, 0, false, false, 2, 0, null, "", false, "Item 3", null, 0, false, false, 3, 0, null, "", false ]
+items = [ "New", null, 0, false, false, 0, 0, null, "", false, "Open", null, 0, false, false, 1, 0, null, "", false, "Save as", null, 0, false, false, 2, 0, null, "", false, "Item 3", null, 0, false, false, 3, 0, null, "", false ]
 hide_on_item_selection = false
 hide_on_checkable_item_selection = false
 __meta__ = {
@@ -237,6 +237,74 @@ resizable = true
 access = 2
 current_dir = "/Users/AEPBS/Documents/GitHub/Pixgd"
 current_path = "/Users/AEPBS/Documents/GitHub/Pixgd/"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConfirmationDialog" type="WindowDialog" parent="CanvasLayer/HBoxContainer/FileOptionButton"]
+visible = true
+margin_left = 416.0
+margin_top = 224.0
+margin_right = 592.0
+margin_bottom = 367.0
+window_title = "New file"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Height" type="SpinBox" parent="CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog"]
+margin_left = 74.0
+margin_top = 54.0
+margin_right = 168.0
+margin_bottom = 79.0
+suffix = "pix"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Width" type="SpinBox" parent="CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog"]
+margin_left = 74.0
+margin_top = 22.0
+margin_right = 168.0
+margin_bottom = 47.0
+suffix = "pix"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog"]
+margin_left = 5.0
+margin_top = 25.0
+margin_right = 40.0
+margin_bottom = 40.0
+text = "width"
+
+[node name="Label3" type="Label" parent="CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog"]
+margin_left = 6.0
+margin_top = 60.0
+margin_right = 48.0
+margin_bottom = 75.0
+text = "height"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ok" type="Button" parent="CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog"]
+margin_left = 42.0
+margin_top = 109.0
+margin_right = 70.0
+margin_bottom = 130.0
+text = "ok"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="cancel" type="Button" parent="CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog"]
+margin_left = 78.0
+margin_top = 109.0
+margin_right = 138.0
+margin_bottom = 130.0
+text = "cancel"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -290,3 +358,5 @@ centered = false
 [connection signal="id_pressed" from="CanvasLayer/HBoxContainer/FileOptionButton/FilePopupMenu" to="CanvasLayer/HBoxContainer" method="_on_FilePopupMenu_id_pressed"]
 [connection signal="file_selected" from="CanvasLayer/HBoxContainer/FileOptionButton/OpenFileDialog" to="." method="_on_OpenFileDialog_file_selected"]
 [connection signal="file_selected" from="CanvasLayer/HBoxContainer/FileOptionButton/SaveFileDialog" to="." method="_on_SaveFileDialog_file_selected"]
+[connection signal="pressed" from="CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog/ok" to="." method="_on_ok_pressed"]
+[connection signal="pressed" from="CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog/cancel" to="CanvasLayer/HBoxContainer" method="_on_cancel_pressed"]

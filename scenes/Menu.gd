@@ -19,8 +19,13 @@ func _on_FileOptionButton_pressed():
 func _on_FilePopupMenu_id_pressed(id):
 	global_id = id
 	match id:
+		0:
+			$FileOptionButton/ConfirmationDialog.popup()
 		1:
 			open_file_dialog.popup()
-			opened_file = open_file_dialog.filename
 		2:
 			save_file_dialog.popup()
+
+
+func _on_cancel_pressed():
+	$FileOptionButton/ConfirmationDialog.hide()
