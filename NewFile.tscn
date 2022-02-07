@@ -1,0 +1,68 @@
+[gd_scene format=2]
+
+[node name="ConfirmationDialog" type="WindowDialog"]
+margin_left = 416.0
+margin_top = 224.0
+margin_right = 592.0
+margin_bottom = 367.0
+window_title = "New file"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Height" type="SpinBox" parent="."]
+margin_left = 74.0
+margin_top = 54.0
+margin_right = 168.0
+margin_bottom = 79.0
+suffix = "pix"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Width" type="SpinBox" parent="."]
+margin_left = 74.0
+margin_top = 22.0
+margin_right = 168.0
+margin_bottom = 47.0
+suffix = "pix"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="."]
+margin_left = 5.0
+margin_top = 25.0
+margin_right = 40.0
+margin_bottom = 40.0
+text = "width"
+
+[node name="Label3" type="Label" parent="."]
+margin_left = 6.0
+margin_top = 60.0
+margin_right = 48.0
+margin_bottom = 75.0
+text = "height"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ok" type="Button" parent="."]
+margin_left = 42.0
+margin_top = 109.0
+margin_right = 70.0
+margin_bottom = 130.0
+text = "ok"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="cancel" type="Button" parent="."]
+margin_left = 78.0
+margin_top = 109.0
+margin_right = 138.0
+margin_bottom = 130.0
+text = "cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
