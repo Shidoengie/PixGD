@@ -29,3 +29,8 @@ func _on_FilePopupMenu_id_pressed(id):
 
 func _on_cancel_pressed():
 	$FileOptionButton/ConfirmationDialog.hide()
+
+
+func _on_EditOptionButton_pressed():
+	$EditOptionButton/EditPopupMenu.visible = !$EditOptionButton/EditPopupMenu.visible
+	pass # Replace with function body.

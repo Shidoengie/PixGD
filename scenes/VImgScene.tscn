@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://scripts/Image.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -15,6 +15,30 @@
 [ext_resource path="res://assets/bucket.png" type="Texture" id=16]
 [ext_resource path="res://assets/pixGD.ttf" type="DynamicFontData" id=17]
 [ext_resource path="res://scenes/Menu.gd" type="Script" id=18]
+
+[sub_resource type="InputEventKey" id=2]
+scancode = 80
+
+[sub_resource type="ShortCut" id=3]
+shortcut = SubResource( 2 )
+
+[sub_resource type="InputEventKey" id=4]
+scancode = 69
+
+[sub_resource type="ShortCut" id=5]
+shortcut = SubResource( 4 )
+
+[sub_resource type="InputEventKey" id=6]
+scancode = 73
+
+[sub_resource type="ShortCut" id=7]
+shortcut = SubResource( 6 )
+
+[sub_resource type="InputEventKey" id=8]
+scancode = 66
+
+[sub_resource type="ShortCut" id=9]
+shortcut = SubResource( 8 )
 
 [sub_resource type="DynamicFont" id=1]
 size = 1
@@ -54,6 +78,7 @@ mouse_default_cursor_shape = 2
 theme = ExtResource( 8 )
 toggle_mode = true
 pressed = true
+shortcut = SubResource( 3 )
 texture_normal = ExtResource( 7 )
 texture_pressed = ExtResource( 6 )
 texture_hover = ExtResource( 6 )
@@ -68,6 +93,7 @@ margin_bottom = 36.0
 mouse_default_cursor_shape = 2
 theme = ExtResource( 8 )
 toggle_mode = true
+shortcut = SubResource( 5 )
 texture_normal = ExtResource( 13 )
 texture_hover = ExtResource( 12 )
 __meta__ = {
@@ -81,6 +107,7 @@ margin_bottom = 56.0
 mouse_default_cursor_shape = 2
 theme = ExtResource( 8 )
 toggle_mode = true
+shortcut = SubResource( 7 )
 texture_normal = ExtResource( 3 )
 texture_hover = ExtResource( 4 )
 __meta__ = {
@@ -93,6 +120,7 @@ margin_right = 16.0
 margin_bottom = 76.0
 theme = ExtResource( 8 )
 toggle_mode = true
+shortcut = SubResource( 9 )
 texture_normal = ExtResource( 16 )
 texture_hover = ExtResource( 14 )
 __meta__ = {
@@ -145,10 +173,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -80.0
-margin_top = -56.0
-margin_right = -16.0
-margin_bottom = -8.0
+margin_left = -78.0
+margin_top = -55.0
+margin_right = -8.0
+margin_bottom = -7.0
 theme = ExtResource( 8 )
 alignment = 2
 __meta__ = {
@@ -202,9 +230,9 @@ text = "File"
 [node name="FilePopupMenu" type="PopupMenu" parent="CanvasLayer/HBoxContainer/FileOptionButton"]
 margin_top = 32.0
 margin_right = 120.0
-margin_bottom = 152.0
+margin_bottom = 124.0
 theme = ExtResource( 8 )
-items = [ "New", null, 0, false, false, 0, 0, null, "", false, "Open", null, 0, false, false, 1, 0, null, "", false, "Save as", null, 0, false, false, 2, 0, null, "", false, "Item 3", null, 0, false, false, 3, 0, null, "", false ]
+items = [ "New", null, 0, false, false, 0, 0, null, "", false, "Open", null, 0, false, false, 1, 0, null, "", false, "Save as", null, 0, false, false, 2, 0, null, "", false, "Save", null, 0, false, false, 3, 0, null, "", false ]
 hide_on_item_selection = false
 hide_on_checkable_item_selection = false
 __meta__ = {
@@ -317,6 +345,10 @@ mouse_default_cursor_shape = 2
 theme = ExtResource( 8 )
 text = "edit"
 
+[node name="EditPopupMenu" type="PopupMenu" parent="CanvasLayer/HBoxContainer/EditOptionButton"]
+margin_right = 20.0
+margin_bottom = 20.0
+
 [node name="SpriteOptionButton" type="Button" parent="CanvasLayer/HBoxContainer"]
 margin_left = 85.0
 margin_right = 139.0
@@ -360,3 +392,4 @@ centered = false
 [connection signal="file_selected" from="CanvasLayer/HBoxContainer/FileOptionButton/SaveFileDialog" to="." method="_on_SaveFileDialog_file_selected"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog/ok" to="." method="_on_ok_pressed"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog/cancel" to="CanvasLayer/HBoxContainer" method="_on_cancel_pressed"]
+[connection signal="pressed" from="CanvasLayer/HBoxContainer/EditOptionButton" to="CanvasLayer/HBoxContainer" method="_on_EditOptionButton_pressed"]
