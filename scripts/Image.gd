@@ -11,18 +11,18 @@ onready var pen_button = get_node("CanvasLayer/VBoxContainer/PentTextureButton")
 onready var eyedropper_button = get_node("CanvasLayer/VBoxContainer/Eyedropper")
 onready var bg = get_node("Canvas/Canvas2")
 onready var fill_button = get_node("CanvasLayer/VBoxContainer/Bucket")
-onready var open_file_dialog = get_node("CanvasLayer/HBoxContainer/FileOptionButton/OpenFileDialog")
-onready var width_new_file = get_node("CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog/Width")
-onready var height_new_file = get_node("CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog/Height")
+onready var open_file_dialog = get_node("CanvasLayer/Menu/FileOptionButton/OpenFileDialog")
+onready var save_file_dialog = get_node("CanvasLayer/Menu/FileOptionButton/SaveFileDialog")
+onready var width_new_file = get_node("CanvasLayer/Menu/FileOptionButton/ConfirmationDialog/Width")
+onready var height_new_file = get_node("CanvasLayer/Menu/FileOptionButton/ConfirmationDialog/Height")
 
-
+var save_path = ""
 var mouse_action
 var img_mousepos
 var texture = ImageTexture.new()
 var nimg = Image.new()
 var mouse_down = false
 var relev
-var inp_check
 
 func _ready():
 	set_as_toplevel(true)
@@ -30,10 +30,13 @@ func _ready():
 func _process(delta):
 	bg.scale.x = nimg.get_size().x / bg.texture.get_size().x
 	bg.scale.y = nimg.get_size().y / bg.texture.get_size().y
-	
 	img_mousepos = img.get_local_mouse_position()
 	texture.create_from_image(nimg,0)
 	img.texture = texture
+	if Input.is_action_just_pressed("save") and save_path != "":
+		nimg.save_png(save_path)
+	elif Input.is_action_just_pressed("save"):
+		 save_file_dialog.popup()
 	mouse_action = Input.is_action_pressed("ui_click_l") or Input.is_action_pressed("ui_click_r")
 	
 	
@@ -96,9 +99,8 @@ func _unhandled_input(event):
 			if event.button_index == BUTTON_WHEEL_DOWN:
 				textfield.text = str(((1/cam.zoom.x)*100))
 				cam.zoom *= Vector2(1.5,1.5)
-	if event is InputEventMouseMotion:
-		if Input.is_action_pressed("ui_middle_click"):
-			cam.position -= event.relative*cam.zoom
+	if event is InputEventMouseMotion and Input.is_action_pressed("ui_middle_click"):
+		cam.position -= event.relative*cam.zoom
 
 func floodfill(x,y,color):
 	nimg.lock()
@@ -125,13 +127,21 @@ func floodfill(x,y,color):
 
 func _on_OpenFileDialog_file_selected(path):
 	nimg.load(path)
-
+	save_path = path
 func _on_SaveFileDialog_file_selected(path):
 	nimg.save_png(path)
-
-
+	save_path = path
 
 func _on_ok_pressed():
+	nimg.unlock()
 	nimg.create(width_new_file.value,height_new_file.value,false,Image.FORMAT_RGBA8)
 	$CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog.hide()
 
+
+
+func _on_FilePopupMenu_id_pressed(id):
+	if id == 3:
+		if save_path != "":
+			nimg.save_png(save_path)
+		else:
+			save_file_dialog.popup()

@@ -1,16 +1,13 @@
 extends HBoxContainer
 
+onready var edit_popup = get_node("EditOptionButton/EditPopupMenu")
 onready var file_popup = get_node("FileOptionButton/FilePopupMenu")
 onready var open_file_dialog = get_node("FileOptionButton/OpenFileDialog")
 onready var save_file_dialog = get_node("FileOptionButton/SaveFileDialog")
 
-func _ready():
-	open_file_dialog.current_file.get_file()
 
 func _on_FileOptionButton_pressed():
-	file_popup.visible = !file_popup.visible
-	pass # Replace with function body.
-
+	file_popup.popup(Rect2(Vector2(0,32),Vector2(120,92)))
 
 func _on_FilePopupMenu_id_pressed(id):
 	match id:
@@ -20,6 +17,8 @@ func _on_FilePopupMenu_id_pressed(id):
 			open_file_dialog.popup()
 		2:
 			save_file_dialog.popup()
+		3:
+			pass
 
 
 func _on_cancel_pressed():
@@ -27,5 +26,6 @@ func _on_cancel_pressed():
 
 
 func _on_EditOptionButton_pressed():
-	$EditOptionButton/EditPopupMenu.visible = !$EditOptionButton/EditPopupMenu.visible
+	edit_popup.popup(Rect2(Vector2(0,21),Vector2(120,64)))
+	
 	pass # Replace with function body.
