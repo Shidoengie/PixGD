@@ -9,12 +9,14 @@ onready var cam = get_node("Camera2D")
 onready var ers_button = get_node("CanvasLayer/VBoxContainer/ErasorTextureButton")
 onready var pen_button = get_node("CanvasLayer/VBoxContainer/PentTextureButton")
 onready var eyedropper_button = get_node("CanvasLayer/VBoxContainer/Eyedropper")
-onready var bg = get_node("Canvas/Canvas2")
+onready var trans_bg = get_node("Canvas/Canvas2")
 onready var fill_button = get_node("CanvasLayer/VBoxContainer/Bucket")
 onready var open_file_dialog = get_node("CanvasLayer/Menu/FileOptionButton/OpenFileDialog")
 onready var save_file_dialog = get_node("CanvasLayer/Menu/FileOptionButton/SaveFileDialog")
 onready var width_new_file = get_node("CanvasLayer/Menu/FileOptionButton/ConfirmationDialog/Width")
 onready var height_new_file = get_node("CanvasLayer/Menu/FileOptionButton/ConfirmationDialog/Height")
+onready var new_file_bg = get_node("CanvasLayer/Menu/FileOptionButton/ConfirmationDialog/ColorPickerTextButton")
+onready var trans_button = get_node("CanvasLayer/Menu/FileOptionButton/ConfirmationDialog/TransButton")
 
 var save_path = ""
 var mouse_action
@@ -28,8 +30,8 @@ func _ready():
 	set_as_toplevel(true)
 	nimg.create(64,64,false,Image.FORMAT_RGBA8)
 func _process(delta):
-	bg.scale.x = nimg.get_size().x / bg.texture.get_size().x
-	bg.scale.y = nimg.get_size().y / bg.texture.get_size().y
+	trans_bg.scale.x = nimg.get_size().x / trans_bg.texture.get_size().x
+	trans_bg.scale.y = nimg.get_size().y / trans_bg.texture.get_size().y
 	img_mousepos = img.get_local_mouse_position()
 	texture.create_from_image(nimg,0)
 	img.texture = texture
@@ -135,7 +137,11 @@ func _on_SaveFileDialog_file_selected(path):
 func _on_ok_pressed():
 	nimg.unlock()
 	nimg.create(width_new_file.value,height_new_file.value,false,Image.FORMAT_RGBA8)
-	$CanvasLayer/HBoxContainer/FileOptionButton/ConfirmationDialog.hide()
+	if new_file_bg.pressed:
+		nimg.fill(new_file_bg.color)
+	elif trans_button.pressed:
+		nimg.fill(Color.transparent)
+	$CanvasLayer/Menu/FileOptionButton/ConfirmationDialog.hide()
 
 
 

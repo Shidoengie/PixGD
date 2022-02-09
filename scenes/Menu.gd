@@ -29,3 +29,12 @@ func _on_EditOptionButton_pressed():
 	edit_popup.popup(Rect2(Vector2(0,21),Vector2(120,64)))
 	
 	pass # Replace with function body.
+
+
+func _on_ColorPickerTextButton_pressed():
+	$FileOptionButton/ConfirmationDialog/TransButton.pressed = false
+
+
+
+func _on_TransButton_pressed():
+	$FileOptionButton/ConfirmationDialog/ColorPickerTextButton.pressed = false
