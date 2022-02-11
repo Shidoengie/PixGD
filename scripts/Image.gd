@@ -17,6 +17,7 @@ onready var width_new_file = get_node("CanvasLayer/Menu/FileOptionButton/Confirm
 onready var height_new_file = get_node("CanvasLayer/Menu/FileOptionButton/ConfirmationDialog/Height")
 onready var new_file_bg = get_node("CanvasLayer/Menu/FileOptionButton/ConfirmationDialog/ColorPickerTextButton")
 onready var trans_button = get_node("CanvasLayer/Menu/FileOptionButton/ConfirmationDialog/TransButton")
+onready var brush_size_slider = get_node("CanvasLayer/SpinBox")
 
 var save_path = ""
 var mouse_action
@@ -25,10 +26,13 @@ var texture = ImageTexture.new()
 var nimg = Image.new()
 var mouse_down = false
 var relev
+var col_cur
 
 func _ready():
+	
 	set_as_toplevel(true)
 	nimg.create(64,64,false,Image.FORMAT_RGBA8)
+	
 func _process(delta):
 	trans_bg.scale.x = nimg.get_size().x / trans_bg.texture.get_size().x
 	trans_bg.scale.y = nimg.get_size().y / trans_bg.texture.get_size().y
@@ -68,26 +72,22 @@ func scroll():
 func ui_input():
 	if img_mousepos.x >= nimg.get_size().x or img_mousepos.x < 0 or img_mousepos.y >= nimg.get_size().y or img_mousepos.y < 0:
 		return
-	if Input.is_action_pressed("ui_click_l"):
+	if Input.is_action_just_pressed("ui_click_l"):
+		col_cur = color_picker.color
+	elif Input.is_action_just_pressed("ui_click_r"):
+		col_cur = color_picker2.color
+	if Input.is_action_pressed("ui_click_l") or Input.is_action_pressed("ui_click_r"):
 		nimg.lock()
 		if pen_button.pressed:
-				paint(color_picker.color)
+				paint(col_cur)
 		elif ers_button.pressed:
 				paint(Color.transparent)
-		elif eyedropper_button.pressed:
+		elif eyedropper_button.pressed and Input.is_action_just_pressed("ui_click_l"):
 			color_picker.color = nimg.get_pixel(img_mousepos.x,img_mousepos.y)
+		elif eyedropper_button.pressed and Input.is_action_just_pressed("ui_click_r"):
+			color_picker.color2 = nimg.get_pixel(img_mousepos.x,img_mousepos.y)
 		elif fill_button.pressed:
-			floodfill(img_mousepos.x,img_mousepos.y,color_picker.color)
-	elif Input.is_action_pressed("ui_click_r"):
-		nimg.lock()
-		if pen_button.pressed:
-				paint(color_picker2.color)
-		elif ers_button.pressed:
-				paint(Color.transparent)
-		elif eyedropper_button.pressed:
-			color_picker2.color = nimg.get_pixel(img_mousepos.x,img_mousepos.y)
-		elif fill_button.pressed:
-			floodfill(img_mousepos.x,img_mousepos.y,color_picker2.color)
+			fill.floodfill(nimg,img_mousepos.x,img_mousepos.y,col_cur)
 
 func _unhandled_input(event):
 	relev = img.get_local_mouse_position()
@@ -104,32 +104,10 @@ func _unhandled_input(event):
 	if event is InputEventMouseMotion and Input.is_action_pressed("ui_middle_click"):
 		cam.position -= event.relative*cam.zoom
 
-func floodfill(x,y,color):
-	nimg.lock()
-	var w = nimg.get_height()
-	var h = nimg.get_width()
-	var old_color = nimg.get_pixel(x,y)
-	if color == old_color:
-			return
-	var queue = []
-	queue.append(Vector2(x,y))
-	while len(queue) > 0:
-		var coords = queue.pop_back()
-		x = coords.x
-		y = coords.y
-		if x < 0 or x > w or y < 0 or y>h or nimg.get_pixel(x,y) != old_color:
-			continue
-		else:
-			nimg.set_pixel(x,y,color)
-			queue.append(Vector2(x,y+1))
-			queue.append(Vector2(x,y-1))
-			queue.append(Vector2(x+1,y))
-			queue.append(Vector2(x-1,y))
-
-
 func _on_OpenFileDialog_file_selected(path):
 	nimg.load(path)
 	save_path = path
+
 func _on_SaveFileDialog_file_selected(path):
 	nimg.save_png(path)
 	save_path = path
@@ -142,8 +120,6 @@ func _on_ok_pressed():
 	elif trans_button.pressed:
 		nimg.fill(Color.transparent)
 	$CanvasLayer/Menu/FileOptionButton/ConfirmationDialog.hide()
-
-
 
 func _on_FilePopupMenu_id_pressed(id):
 	if id == 3:
