@@ -14,6 +14,8 @@ onready var height_new_file = get_node("CanvasLayer/Menu/FileOptionButton/Confir
 onready var new_file_bg = get_node("CanvasLayer/Menu/FileOptionButton/ConfirmationDialog/ColorPickerTextButton")
 onready var trans_button = get_node("CanvasLayer/Menu/FileOptionButton/ConfirmationDialog/TransButton")
 
+var buffer_index = -1
+var buffer_total = 0
 var buffer = []
 var save_path = ""
 var mouse_action
@@ -23,9 +25,7 @@ var nimg = Image.new()
 var mouse_down = false
 var relev
 var col_cur
-var action_index = 1
-var action_total = 0
-
+var item
 func _ready():
 	
 	set_as_toplevel(true)
@@ -37,16 +37,12 @@ func _process(delta):
 	img_mousepos = img.get_local_mouse_position()
 	texture.create_from_image(nimg,0)
 	img.texture = texture
-	if Input.is_action_just_pressed("undo") and not buffer.back().empty() and action_index >= 1:
-		var item = buffer.pop_back()
-		buffer.push_front(item)
-		nimg.load_png_from_buffer(item)
-		action_index -= 1
-	elif Input.is_action_just_pressed("redo") and action_index <  action_total:
-		var item = buffer.pop_front()
-		buffer.push_back(item)
-		nimg.load_png_from_buffer(item)
-		action_index += 1
+	if Input.is_action_just_pressed("undo") and buffer_index >= -buffer_total/2:
+		nimg.load_png_from_buffer(buffer.pop_back())
+		buffer_index -=1
+	if Input.is_action_just_pressed("redo") and buffer_index <= buffer_total/2:
+		nimg.load_png_from_buffer(buffer.pop_back())
+		buffer_index +=1
 	if Input.is_action_just_pressed("save") and save_path != "":
 		nimg.save_png(save_path)
 	elif Input.is_action_just_pressed("save"):
@@ -77,21 +73,22 @@ func scroll():
 	cam.zoom = Vector2(1,1)
 	cam.zoom /= Vector2(int(textfield.text)/100,int((textfield.text))/100)
 
+
 func ui_input():
 	if img_mousepos.x >= nimg.get_size().x or img_mousepos.x < 0 or img_mousepos.y >= nimg.get_size().y or img_mousepos.y < 0:
 		return
 	if Input.is_action_just_pressed("ui_click_l"):
 		col_cur = color_picker.color
-		buffer.append(nimg.save_png_to_buffer())
-		action_index += 1
-		action_total += 1
+		buffer.push_back(nimg.save_png_to_buffer())
+		buffer.push_front(nimg.save_png_to_buffer())
+		
 	elif Input.is_action_just_pressed("ui_click_r"):
 		col_cur = color_picker2.color
-		buffer.append(nimg.save_png_to_buffer())
-		action_index += 1
-		action_total += 1
+		buffer.push_back(nimg.save_png_to_buffer())
+		buffer.push_front(nimg.save_png_to_buffer())
 	if Input.is_action_pressed("ui_click_l") or Input.is_action_pressed("ui_click_r"):
 		nimg.lock()
+		buffer_total += 1
 		if $CanvasLayer/VBoxContainer/PentTextureButton.pressed:
 			paint(col_cur)
 		elif $CanvasLayer/VBoxContainer/ErasorTextureButton.pressed:
