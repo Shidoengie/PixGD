@@ -6,19 +6,15 @@ onready var img = get_node("Canvas")
 onready var color_picker = get_node("CanvasLayer/ColorPicker")
 onready var color_picker2 = get_node("CanvasLayer/ColorPicker2")
 onready var cam = get_node("Camera2D")
-onready var ers_button = get_node("CanvasLayer/VBoxContainer/ErasorTextureButton")
-onready var pen_button = get_node("CanvasLayer/VBoxContainer/PentTextureButton")
-onready var eyedropper_button = get_node("CanvasLayer/VBoxContainer/Eyedropper")
 onready var trans_bg = get_node("Canvas/Canvas2")
-onready var fill_button = get_node("CanvasLayer/VBoxContainer/Bucket")
 onready var open_file_dialog = get_node("CanvasLayer/Menu/FileOptionButton/OpenFileDialog")
 onready var save_file_dialog = get_node("CanvasLayer/Menu/FileOptionButton/SaveFileDialog")
 onready var width_new_file = get_node("CanvasLayer/Menu/FileOptionButton/ConfirmationDialog/Width")
 onready var height_new_file = get_node("CanvasLayer/Menu/FileOptionButton/ConfirmationDialog/Height")
 onready var new_file_bg = get_node("CanvasLayer/Menu/FileOptionButton/ConfirmationDialog/ColorPickerTextButton")
 onready var trans_button = get_node("CanvasLayer/Menu/FileOptionButton/ConfirmationDialog/TransButton")
-onready var brush_size_slider = get_node("CanvasLayer/SpinBox")
 
+var buffer = []
 var save_path = ""
 var mouse_action
 var img_mousepos
@@ -27,6 +23,8 @@ var nimg = Image.new()
 var mouse_down = false
 var relev
 var col_cur
+var action_index = 1
+var action_total = 0
 
 func _ready():
 	
@@ -39,10 +37,20 @@ func _process(delta):
 	img_mousepos = img.get_local_mouse_position()
 	texture.create_from_image(nimg,0)
 	img.texture = texture
+	if Input.is_action_just_pressed("undo") and not buffer.back().empty() and action_index >= 1:
+		var item = buffer.pop_back()
+		buffer.push_front(item)
+		nimg.load_png_from_buffer(item)
+		action_index -= 1
+	elif Input.is_action_just_pressed("redo") and action_index <  action_total:
+		var item = buffer.pop_front()
+		buffer.push_back(item)
+		nimg.load_png_from_buffer(item)
+		action_index += 1
 	if Input.is_action_just_pressed("save") and save_path != "":
 		nimg.save_png(save_path)
 	elif Input.is_action_just_pressed("save"):
-		 save_file_dialog.popup()
+		save_file_dialog.popup()
 	mouse_action = Input.is_action_pressed("ui_click_l") or Input.is_action_pressed("ui_click_r")
 	
 	
@@ -74,19 +82,25 @@ func ui_input():
 		return
 	if Input.is_action_just_pressed("ui_click_l"):
 		col_cur = color_picker.color
+		buffer.append(nimg.save_png_to_buffer())
+		action_index += 1
+		action_total += 1
 	elif Input.is_action_just_pressed("ui_click_r"):
 		col_cur = color_picker2.color
+		buffer.append(nimg.save_png_to_buffer())
+		action_index += 1
+		action_total += 1
 	if Input.is_action_pressed("ui_click_l") or Input.is_action_pressed("ui_click_r"):
 		nimg.lock()
-		if pen_button.pressed:
-				paint(col_cur)
-		elif ers_button.pressed:
-				paint(Color.transparent)
-		elif eyedropper_button.pressed and Input.is_action_just_pressed("ui_click_l"):
+		if $CanvasLayer/VBoxContainer/PentTextureButton.pressed:
+			paint(col_cur)
+		elif $CanvasLayer/VBoxContainer/ErasorTextureButton.pressed:
+			paint(Color.transparent)
+		elif $CanvasLayer/VBoxContainer/Eyedropper.pressed and Input.is_action_just_pressed("ui_click_l"):
 			color_picker.color = nimg.get_pixel(img_mousepos.x,img_mousepos.y)
-		elif eyedropper_button.pressed and Input.is_action_just_pressed("ui_click_r"):
+		elif $CanvasLayer/VBoxContainer/Eyedropper.pressed and Input.is_action_just_pressed("ui_click_r"):
 			color_picker.color2 = nimg.get_pixel(img_mousepos.x,img_mousepos.y)
-		elif fill_button.pressed:
+		elif $CanvasLayer/VBoxContainer/Bucket.pressed:
 			fill.floodfill(nimg,img_mousepos.x,img_mousepos.y,col_cur)
 
 func _unhandled_input(event):
