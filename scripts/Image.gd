@@ -14,7 +14,8 @@ onready var height_new_file = get_node("CanvasLayer/Menu/FileOptionButton/Confir
 onready var new_file_bg = get_node("CanvasLayer/Menu/FileOptionButton/ConfirmationDialog/ColorPickerTextButton")
 onready var trans_button = get_node("CanvasLayer/Menu/FileOptionButton/ConfirmationDialog/TransButton")
 
-var buffer_index = -1
+var redo_buffer = []
+var buffer_index = 0
 var buffer_total = 0
 var buffer = []
 var save_path = ""
@@ -37,12 +38,11 @@ func _process(delta):
 	img_mousepos = img.get_local_mouse_position()
 	texture.create_from_image(nimg,0)
 	img.texture = texture
-	if Input.is_action_just_pressed("undo") and buffer_index >= -buffer_total/2:
+	if Input.is_action_just_pressed("undo") and buffer_index < len(buffer):
+		redo_buffer.append(buffer.back())
 		nimg.load_png_from_buffer(buffer.pop_back())
-		buffer_index -=1
-	if Input.is_action_just_pressed("redo") and buffer_index <= buffer_total/2:
-		nimg.load_png_from_buffer(buffer.pop_back())
-		buffer_index +=1
+	if Input.is_action_just_pressed("redo"):
+		nimg.load_png_from_buffer(redo_buffer.pop_back())
 	if Input.is_action_just_pressed("save") and save_path != "":
 		nimg.save_png(save_path)
 	elif Input.is_action_just_pressed("save"):
@@ -79,13 +79,12 @@ func ui_input():
 		return
 	if Input.is_action_just_pressed("ui_click_l"):
 		col_cur = color_picker.color
-		buffer.push_back(nimg.save_png_to_buffer())
-		buffer.push_front(nimg.save_png_to_buffer())
+		buffer.append(nimg.save_png_to_buffer())
 		
 	elif Input.is_action_just_pressed("ui_click_r"):
 		col_cur = color_picker2.color
-		buffer.push_back(nimg.save_png_to_buffer())
-		buffer.push_front(nimg.save_png_to_buffer())
+		buffer.append(nimg.save_png_to_buffer())
+		
 	if Input.is_action_pressed("ui_click_l") or Input.is_action_pressed("ui_click_r"):
 		nimg.lock()
 		buffer_total += 1
