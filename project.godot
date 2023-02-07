@@ -51,6 +51,8 @@ config/icon="res://icon.png"
 [autoload]
 
 fill="*res://scripts/fill.gd"
+DebugDraw="res://addons/zylann.debug_draw/debug_draw.gd"
+Global="*res://scripts/Global.gd"
 
 [editor_plugins]
 

@@ -14,7 +14,7 @@ func floodfill(f_img,x,y,color):
 		var coords = queue.pop_back()
 		x = coords.x
 		y = coords.y
-		if x < 0 or x > w or y < 0 or y>h or f_img.get_pixel(x,y) != old_color:
+		if x < 0 or x > w or y < 0 or y>=h or f_img.get_pixel(x,y) != old_color:
 			continue
 		else:
 			f_img.set_pixel(x,y,color)
